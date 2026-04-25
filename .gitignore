@@ -4,7 +4,7 @@
 venv/
 
 logs.txt
-
+service-account.json
 # bytecode / caches
 __pycache__/
 *.py[cod]

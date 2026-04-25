@@ -150,13 +150,28 @@ tokenlend/
 ## Database Schema — Key Tables
 
 ```sql
+-- NEW: add this block before the agents table
+users (
+  id TEXT,
+  name TEXT,
+  email TEXT UNIQUE,
+  hashed_password TEXT,
+  city TEXT,
+  timezone TEXT,   -- IANA string e.g. "Asia/Kolkata"
+  created_at TEXT
+)
+
 -- Groq token balances live on agents table
 agents (
   id, user_id, name, role,
   encrypted_api_key, api_key_masked,
-  token_balance, max_balance,
-  trust_score, ...
-  location, Time-zone
+  token_balance REAL, max_balance REAL,
+  usage_rate REAL, trust_score REAL DEFAULT 0.80,
+  loans_taken INT DEFAULT 0,
+  loans_given INT DEFAULT 0,
+  repayments_ok INT DEFAULT 0,
+  last_active TEXT, created_at TEXT
+  -- location and timezone removed, live on users now
 )
 
 -- TLC is completely separate
