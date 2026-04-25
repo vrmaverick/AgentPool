@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+google-cloud-firestore
+firebase-admin
+cryptography
+python-jose[cryptography]
+passlib[bcrypt]
+httpx
+python-dotenv
+groq
+pydantic
