@@ -1,0 +1,40 @@
+# ---- Python backend ----
+# virtual env
+.venv/
+venv/
+
+logs.txt
+
+# bytecode / caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# environment / secrets
+.env
+.env.*
+*.sqlite3
+
+# tooling caches
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+coverage.xml
+htmlcov/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ---- Node frontend ----
+node_modules/
+dist/
+.build/
+*.log
+
+# ---- Misc ----
+*.pid
+*.swp
+*.swo
