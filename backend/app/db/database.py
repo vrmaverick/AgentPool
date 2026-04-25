@@ -3,13 +3,12 @@ database.py — Firestore async client + collection name constants.
 
 Collection layout (schema-less; fields shown as reference):
 
-  USERS            {id, name, email, hashed_password, created_at}
+  USERS            {id, name, email, hashed_password, city, timezone, created_at}
   AGENTS           {id, user_id, name, role,
                     encrypted_api_key, api_key_masked,
                     token_balance, max_balance,
                     trust_score, loans_taken, loans_given, repayments_ok,
-                    usage_rate, last_active, created_at,
-                    location, timezone, preferred_start_hour, preferred_end_hour}
+                    usage_rate, last_active, created_at}
   LOANS            {id, lender_agent_id, borrower_agent_id,
                     lender_user_id, borrower_user_id,
                     amount, tlc_yield_amount, platform_tlc_fee,

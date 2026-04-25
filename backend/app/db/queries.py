@@ -37,18 +37,25 @@ async def _doc_to_dict(ref) -> Optional[dict]:
 # USERS
 # ═══════════════════════════════════════════════════════════════════════════════
 
-async def create_user(name: str, email: str, hashed_password: str) -> dict:
+async def create_user(
+    name: str,
+    email: str,
+    hashed_password: str,
+    city: str | None = None,
+    timezone: str | None = None,
+) -> dict:
     ref = db.collection(USERS).document()
     doc = {
         "id": ref.id,
         "name": name,
         "email": email,
         "hashed_password": hashed_password,
+        "city": city,
+        "timezone": timezone,
         "created_at": _now(),
     }
     await ref.set(doc)
     return doc
-
 
 async def get_user_by_email(email: str) -> Optional[dict]:
     docs = db.collection(USERS).where("email", "==", email).limit(1).stream()
@@ -94,10 +101,6 @@ async def create_agent(
         "usage_rate": 0.0,
         "last_active": None,
         "created_at": _now(),
-        "location": location,
-        "timezone": timezone,
-        "preferred_start_hour": preferred_start_hour,
-        "preferred_end_hour": preferred_end_hour,
     }
     await ref.set(doc)
     return doc
@@ -130,8 +133,16 @@ async def update_agent_token_balance(agent_id: str, delta: float) -> None:
 
 
 async def update_agent_trust_score(agent_id: str, delta: float) -> None:
+    """Increment trust score by delta (no clamping — use set_agent_trust_score for clamped writes)."""
     await db.collection(AGENTS).document(agent_id).update({
         "trust_score": firestore.Increment(delta),
+    })
+
+
+async def set_agent_trust_score(agent_id: str, value: float) -> None:
+    """Write an absolute trust score value. Use this when clamping is required."""
+    await db.collection(AGENTS).document(agent_id).update({
+        "trust_score": value,
     })
 
 

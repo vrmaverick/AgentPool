@@ -9,3 +9,6 @@ httpx
 python-dotenv
 groq
 pydantic
+pydantic[email]
+tzdata
+bcrypt==4.0.1
