@@ -231,6 +231,9 @@ async def create_proxy_token(
     user_id: str,
     credits_remaining: float,
     expires_at: str,
+    key_source: str = "self",
+    loan_id: Optional[str] = None,
+    lender_user_id: Optional[str] = None,
 ) -> dict:
     ref = db.collection(PROXY_TOKENS).document(token_id)
     doc = {
@@ -240,6 +243,9 @@ async def create_proxy_token(
         "credits_remaining": credits_remaining,
         "created_at": _now(),
         "expires_at": expires_at,
+        "key_source": key_source,
+        "loan_id": loan_id,
+        "lender_user_id": lender_user_id,
     }
     await ref.set(doc)
     return doc
@@ -257,6 +263,11 @@ async def update_proxy_token_credits(token_id: str, delta: float) -> None:
 
 async def delete_proxy_token(token_id: str) -> None:
     await db.collection(PROXY_TOKENS).document(token_id).delete()
+
+async def expire_proxy_tokens_by_loan_id(loan_id: str) -> None:
+    docs = db.collection(PROXY_TOKENS).where("loan_id", "==", loan_id).stream()
+    async for snap in docs:
+        await snap.reference.update({"credits_remaining": 0, "expires_at": _now()})
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
