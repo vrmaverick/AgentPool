@@ -7,6 +7,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.users import router as users_router
 from app.api.agents import router as agents_router
+from app.api.loans import router as loans_router
+from app.api.proxy import router as proxy_router
+from app.api.wallet import router as wallet_router
+from app.api.demo import router as demo_router
 
 app = FastAPI(title="TokenLend", version="2.0")
 
@@ -21,6 +25,10 @@ app.add_middleware(
 # ── Routers ───────────────────────────────────────────────────────────────────
 app.include_router(users_router, prefix="/user", tags=["users"])
 app.include_router(agents_router, prefix="/agent", tags=["agents"])
+app.include_router(loans_router, prefix="/loan", tags=["loans"])
+app.include_router(proxy_router, prefix="/proxy", tags=["proxy"])
+app.include_router(wallet_router, prefix="/wallet", tags=["wallet"])
+app.include_router(demo_router, prefix="/demo", tags=["demo"])
 
 
 # ── Health check ──────────────────────────────────────────────────────────────
